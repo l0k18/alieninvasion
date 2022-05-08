@@ -55,21 +55,29 @@ func (w *World) AddFromString(input string) (err error) {
 		}
 	}
 
-	// Add new index to lookup table
-	city := w.Length
-	err = w.Lookup.Add(newName, city)
-	if err != nil {
+	// if city doesn't exist, add it to the lookup
+	var city int
+	var ok bool
+	if city, ok = w.Lookup.Name[newName]; !ok {
 
-		// This means we are trying to add the same city on a new index
-		return err
+		// Add new index to lookup table
+		city = w.Length
+		err = w.Lookup.Add(newName, city)
+		if err != nil {
+
+			// This means we are trying to add the same city on a new index
+			return err
+		}
+		// Append new empty city entry with matching index
+		w.Cities = append(w.Cities, City{})
+
+		// The Cities slice is now one element longer,
+		// next addition must be on the next index
+		w.Length++
 	}
 
-	// Append new empty city entry with matching index
-	w.Cities = append(w.Cities, City{})
-
-	// The Cities slice is now one element longer,
-	// next addition must be on the next index
-	w.Length++
+	// If the city does exist it was made by a neighbour and has no
+	// neighbours yet
 
 	if len(neighbours) > 0 {
 
@@ -108,7 +116,6 @@ func (w *World) AddFromString(input string) (err error) {
 			}
 
 			var n int
-			var ok bool
 			// if the key doesn't exist, create it
 			if n, ok = w.Lookup.Name[newNeighbour]; !ok {
 
@@ -123,14 +130,15 @@ func (w *World) AddFromString(input string) (err error) {
 				}
 
 				// If the neighbour in the specified direction already exists
-				// and isn't the same neighbour as was given the input is
-				// invalid
-			} else if w.Cities[city].Neighbor[dir] != n {
+				// and doesn't already point back to the current city there
+				// is an error in the specification
+			} else if w.Cities[n].Neighbor[^dir&3] != city {
 
 				return fmt.Errorf(
-					"city already exists in direction %s"+
-						" from city %s with name %s, cannot overwrite with %s",
-					dirs[dir], newName, w.Lookup.Index[city], newNeighbour,
+					"error adding city %s as preexisting neighbour %s is"+
+						" pointing to different city %s",
+					newName, newNeighbour,
+					w.Lookup.Index[w.Cities[n].Neighbor[^dir&3]],
 				)
 			}
 

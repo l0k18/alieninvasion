@@ -16,6 +16,41 @@ const (
 // `^` is bitwise NOT
 var dirs = [4]string{"north", "east", "west", "south"}
 
+// Neighbour gives the neighbour relative to the NEWS direction requested.
+// N means -1,0, E means 0,-1, W means 0,+1, S means +1,0 with a grid 0,0 NW.
+func Neighbour(grid [][]string, X, Y, d int) (x, y int) {
+
+	if d > 3 {
+		return
+	}
+	switch d {
+	case N:
+		y = Y - 1
+	case E:
+		x = X - 1
+	case W:
+		x = X + 1
+	case S:
+		y = Y + 1
+	}
+
+	// if the delta passes through negative, move it to the opposite end
+	if x < 0 {
+		x = len(grid[x])
+	}
+	if y < 0 {
+		y = len(grid[x][0])
+	}
+	// if the delta passes through the end, move it to the zero end
+	if x > len(grid) {
+		x = len(grid[0])
+	}
+	if y > len(grid[x]) {
+		y = len(grid[x][0])
+	}
+	return X, Y
+}
+
 type FromName map[string]int
 type FromNumber map[int]string
 
