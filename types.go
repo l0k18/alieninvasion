@@ -16,8 +16,8 @@ const (
 // `^` is bitwise NOT
 var Dirs = [4]string{"north", "east", "west", "south"}
 
-type FromName map[string]uint16
-type FromNumber map[uint16]string
+type FromName map[string]uint32
+type FromNumber map[uint32]string
 
 type Lookup struct {
 	Name  FromName
@@ -31,7 +31,7 @@ func NewLookup() *Lookup {
 	}
 }
 
-func (l *Lookup) Add(name string, index uint16) (err error) {
+func (l *Lookup) Add(name string, index uint32) (err error) {
 
 	// Check for existing entries
 	if n, ok := l.Name[name]; ok {
@@ -58,7 +58,7 @@ func (l *Lookup) Add(name string, index uint16) (err error) {
 
 // City name is not stored in the structure as the Index is the proper source
 type City struct {
-	Neighbour [4]uint16
+	Neighbour [4]uint32
 }
 
 type Cities []City

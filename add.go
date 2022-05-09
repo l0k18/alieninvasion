@@ -56,11 +56,11 @@ func (w *World) AddFromString(input string) (err error) {
 	}
 
 	// if city doesn't exist, add it to the lookup
-	var city uint16
+	var city uint32
 	var ok bool
 	if city, ok = w.Lookup.Name[newName]; !ok {
 		// Add new index to lookup table
-		city = uint16(w.Length)
+		city = uint32(w.Length)
 		err = w.Lookup.Add(newName, city)
 		if err != nil {
 
@@ -112,7 +112,7 @@ func (w *World) AddFromString(input string) (err error) {
 				)
 			}
 
-			var n uint16
+			var n uint32
 			// if the key doesn't exist, create it
 			if n, ok = w.Lookup.Name[newNeighbour]; !ok {
 
