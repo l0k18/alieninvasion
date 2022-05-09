@@ -41,7 +41,7 @@ func main() {
 		fail(err)
 	}
 
-	if int(h*v) > nameLen {
+	if int(h*v) > NameLen {
 		err = errors.New(
 			"sorry, there isn't enough names in our list" +
 				"for that many human settlements",
@@ -79,8 +79,8 @@ func GenerateWorld(h, v int64, seed int64) (w *World) {
 
 		for long := range grid[lat] {
 
-			name := rand.Intn(nameLen)
-			grid[lat][long] = nameList[name]
+			name := rand.Intn(NameLen)
+			grid[lat][long] = NameList[name]
 		}
 	}
 

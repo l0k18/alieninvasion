@@ -9,14 +9,15 @@ import (
 )
 
 func main() {
-	fd, err := os.Open("./cmd/namegen/names.csv")
+
+	fd, err := os.Open("../namegen/names.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer fd.Close()
 
 	output, err := os.OpenFile(
-		"./cmd/worldgen/names.go", os.O_CREATE|os.O_RDWR,
+		"names.go", os.O_CREATE|os.O_RDWR|os.O_TRUNC,
 		0755,
 	)
 	if err != nil {
@@ -29,11 +30,14 @@ func main() {
 		output,
 		`package main
 
+// Run 'go generate' at the root of the repo on this package to update this file
+`+`//go:generate go run ../namegen/.
+
 import "sort"
 
 func init() {
-	NameLen = len(nameList)
-	sort.Strings(nameList)
+	NameLen = len(NameList)
+	sort.Strings(NameList)
 }
 
 var NameLen int
@@ -51,7 +55,7 @@ var NameList = []string{`,
 			output, "\t\"%s\",\n",
 			strings.ReplaceAll(
 				strings.ReplaceAll(
-					split[1],
+					split[2],
 					" ", "_",
 				),
 				"\"", "",
