@@ -62,6 +62,10 @@ func main() {
 func GenerateWorld(h, v int64, seed int64) (w *World) {
 
 	rand.Seed(seed)
+	rand.Shuffle(
+		len(NameList),
+		func(i, j int) { NameList[i], NameList[j] = NameList[j], NameList[i] },
+	)
 
 	w = NewWorld()
 
@@ -73,14 +77,13 @@ func GenerateWorld(h, v int64, seed int64) (w *World) {
 		grid[i] = make(Line, h)
 	}
 
-	rand.Seed(seed)
-
+	var name int
 	for lat := range grid {
 
 		for long := range grid[lat] {
 
-			name := rand.Intn(NameLen)
 			grid[lat][long] = NameList[name]
+			name++
 		}
 	}
 
