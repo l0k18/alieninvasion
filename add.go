@@ -130,9 +130,9 @@ func (w *World) AddFromString(input string) (err error) {
 				// If the neighbour in the specified direction already exists
 				// and doesn't already point back to the current city there
 				// is an error in the specification
-			} else if w.Cities[n].Neighbor[^dir&3] != city &&
+			} else if w.Cities[n].Neighbour[^dir&3] != city &&
 				n != 0 &&
-				w.Cities[n].Neighbor[^dir&3] != 0 {
+				w.Cities[n].Neighbour[^dir&3] != 0 {
 
 				// fmt.Println("n", n)
 				// spew.Dump(w.Cities)
@@ -140,8 +140,12 @@ func (w *World) AddFromString(input string) (err error) {
 					"error adding city %s as preexisting neighbour %s is"+
 						" pointing to different city %s",
 					newName, newNeighbour,
-					w.Lookup.Index[w.Cities[n].Neighbor[^dir&3]],
+					w.Lookup.Index[w.Cities[n].Neighbour[^dir&3]],
 				)
+			} else {
+
+				w.Cities[city].Neighbour[dir] = w.Lookup.Name[newNeighbour]
+				w.Cities[n].Neighbour[^dir&3] = city
 			}
 
 		}

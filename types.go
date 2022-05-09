@@ -93,7 +93,7 @@ func (l *Lookup) Add(name string, index int) (err error) {
 
 // City name is not stored in the structure as the Index is the proper source
 type City struct {
-	Neighbor [4]int
+	Neighbour [4]int
 }
 
 type Cities []City
