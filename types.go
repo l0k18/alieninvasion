@@ -16,43 +16,8 @@ const (
 // `^` is bitwise NOT
 var Dirs = [4]string{"north", "east", "west", "south"}
 
-// Neighbour gives the neighbour relative to the NEWS direction requested.
-// N means -1,0, E means 0,-1, W means 0,+1, S means +1,0 with a grid 0,0 NW.
-func Neighbour(grid [][]string, X, Y, d int) (x, y int) {
-
-	if d > 3 {
-		return
-	}
-	switch d {
-	case N:
-		y = Y - 1
-	case E:
-		x = X - 1
-	case W:
-		x = X + 1
-	case S:
-		y = Y + 1
-	}
-
-	// if the delta passes through negative, move it to the opposite end
-	if x < 0 {
-		x = len(grid[x])
-	}
-	if y < 0 {
-		y = len(grid[x][0])
-	}
-	// if the delta passes through the end, move it to the zero end
-	if x > len(grid) {
-		x = len(grid[0])
-	}
-	if y > len(grid[x]) {
-		y = len(grid[x][0])
-	}
-	return X, Y
-}
-
-type FromName map[string]int
-type FromNumber map[int]string
+type FromName map[string]uint16
+type FromNumber map[uint16]string
 
 type Lookup struct {
 	Name  FromName
@@ -66,7 +31,7 @@ func NewLookup() *Lookup {
 	}
 }
 
-func (l *Lookup) Add(name string, index int) (err error) {
+func (l *Lookup) Add(name string, index uint16) (err error) {
 
 	// Check for existing entries
 	if n, ok := l.Name[name]; ok {
@@ -93,7 +58,7 @@ func (l *Lookup) Add(name string, index int) (err error) {
 
 // City name is not stored in the structure as the Index is the proper source
 type City struct {
-	Neighbour [4]int
+	Neighbour [4]uint16
 }
 
 type Cities []City
