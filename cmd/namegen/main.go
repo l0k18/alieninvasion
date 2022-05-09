@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	fd, err := os.Open("names.csv")
+	fd, err := os.Open("./cmd/namegen/names.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer fd.Close()
 
 	output, err := os.OpenFile(
-		"../worldgen/names.go", os.O_CREATE|os.O_RDWR,
+		"./cmd/worldgen/names.go", os.O_CREATE|os.O_RDWR,
 		0755,
 	)
 	if err != nil {
@@ -32,10 +32,12 @@ func main() {
 import "sort"
 
 func init() {
+	NameLen = len(nameList)
 	sort.Strings(nameList)
 }
 
-var nameList = []string{`,
+var NameLen int
+var NameList = []string{`,
 	)
 
 	first := true
@@ -48,7 +50,10 @@ var nameList = []string{`,
 		fmt.Fprintf(
 			output, "\t\"%s\",\n",
 			strings.ReplaceAll(
-				split[1],
+				strings.ReplaceAll(
+					split[1],
+					" ", "_",
+				),
 				"\"", "",
 			),
 		)

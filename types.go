@@ -10,11 +10,11 @@ const (
 	kvSep = "="
 )
 
-// directions are ordered so that `^dir & 3` is the opposite direction:
+// Dirs are ordered so that `^dir & 3` is the opposite direction:
 // n=00 e=01 w=10 s=11
 // `& 3` masks the higher bits out
 // `^` is bitwise NOT
-var dirs = [4]string{"north", "east", "west", "south"}
+var Dirs = [4]string{"north", "east", "west", "south"}
 
 // Neighbour gives the neighbour relative to the NEWS direction requested.
 // N means -1,0, E means 0,-1, W means 0,+1, S means +1,0 with a grid 0,0 NW.
@@ -61,8 +61,8 @@ type Lookup struct {
 
 func NewLookup() *Lookup {
 	return &Lookup{
-		Name:  make(FromName),
-		Index: make(FromNumber),
+		Name:  FromName{"": 0},
+		Index: FromNumber{0: ""},
 	}
 }
 
@@ -108,6 +108,6 @@ type World struct {
 
 func NewWorld() *World {
 	return &World{
-		Lookup: NewLookup(), Cities: NewCities(),
+		Length: 1, Lookup: NewLookup(), Cities: NewCities(),
 	}
 }

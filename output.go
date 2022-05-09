@@ -1,5 +1,7 @@
 package alieninvasion
 
-func (w *World) ToFile(filename string) {
+import "github.com/davecgh/go-spew/spew"
 
+func (w *World) ToFile(filename string) {
+	spew.Dump(w)
 }

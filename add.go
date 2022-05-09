@@ -12,8 +12,7 @@ func (w *World) AddFromString(input string) (err error) {
 	// each direction
 	split := strings.Split(input, " ")
 
-	// All names should be standardised to title case in case of manual input
-	newName := strings.ToTitle(split[0])
+	newName := split[0]
 
 	// The first string should be a city name and not a key value pair
 	if strings.Contains(newName, kvSep) {
@@ -29,6 +28,7 @@ func (w *World) AddFromString(input string) (err error) {
 	}
 
 	neighbours := split[1:]
+
 	if len(neighbours) > 0 {
 
 		// Validate that all specified neighbours are `dir=Name`
@@ -90,17 +90,15 @@ func (w *World) AddFromString(input string) (err error) {
 			// character, as it is distinctive
 			key := strings.ToLower(kvs[0][:1])
 
-			// this ensures variants of case are standardised to Title case
-			// (first character is capital, the rest lower case)
-			newNeighbour := strings.ToTitle(kvs[1])
+			newNeighbour := kvs[1]
 
 			var validDir bool
 			var dir int
 
 			// Check that the key is a valid direction string.
 			// Note we only compare the first character.
-			for d := range dirs {
-				if key == dirs[d][:1] {
+			for d := range Dirs {
+				if key == Dirs[d][:1] {
 
 					validDir = true
 					dir = d
@@ -121,7 +119,7 @@ func (w *World) AddFromString(input string) (err error) {
 
 				// automatically set current to be opposite neighbour
 				newCity :=
-					fmt.Sprintf("%s %s=%s", newNeighbour, dirs[^dir&3], newName)
+					fmt.Sprintf("%s %s=%s", newNeighbour, Dirs[^dir&3], newName)
 
 				err := w.AddFromString(newCity)
 				if err != nil {
@@ -132,8 +130,12 @@ func (w *World) AddFromString(input string) (err error) {
 				// If the neighbour in the specified direction already exists
 				// and doesn't already point back to the current city there
 				// is an error in the specification
-			} else if w.Cities[n].Neighbor[^dir&3] != city {
+			} else if w.Cities[n].Neighbor[^dir&3] != city &&
+				n != 0 &&
+				w.Cities[n].Neighbor[^dir&3] != 0 {
 
+				// fmt.Println("n", n)
+				// spew.Dump(w.Cities)
 				return fmt.Errorf(
 					"error adding city %s as preexisting neighbour %s is"+
 						" pointing to different city %s",
