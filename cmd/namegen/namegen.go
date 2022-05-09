@@ -65,8 +65,7 @@ var NameList = []string{`,
 
 	fmt.Fprintln(
 		output,
-		`}
-`,
+		`}`,
 	)
 
 	if err := scanner.Err(); err != nil {
