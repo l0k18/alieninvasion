@@ -112,6 +112,13 @@ func (w *World) AddFromString(input string) (err error) {
 				)
 			}
 
+			// if the value is empty the neighbour was destroyed,
+			// and addition will also add nothing, just continue
+			if newNeighbour == "" {
+
+				continue
+			}
+
 			var n uint32
 			// if the key doesn't exist, create it
 			if n, ok = w.Lookup.Name[newNeighbour]; !ok {

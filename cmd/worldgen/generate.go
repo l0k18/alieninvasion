@@ -16,15 +16,17 @@ type Grid []Line
 
 func fail(err error) {
 	fmt.Println(err)
+	fmt.Println("alieninvasion world map grid generator")
+	fmt.Printf("usage: %s <h> <v> <seed> <filename>\n", os.Args[0])
 	os.Exit(1)
 }
 
 func main() {
 
-	if len(os.Args) != 4 {
+	if len(os.Args) != 5 {
 		fmt.Println("alieninvasion world map grid generator")
-		fmt.Printf("usage: %s <h> <v> <seed>", os.Args[0])
-		os.Exit(1)
+		fmt.Printf("usage: %s <h> <v> <seed> <filename>\n", os.Args[0])
+		os.Exit(0)
 	}
 
 	var h, v, seed int64
@@ -55,7 +57,7 @@ func main() {
 	}
 
 	w := GenerateWorld(h, v, seed)
-	w.ToFile("filename")
+	w.ToFile(os.Args[4])
 
 }
 

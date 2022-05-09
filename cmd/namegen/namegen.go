@@ -37,11 +37,8 @@ func main() {
 		names[counter] =
 			strings.ReplaceAll(
 				strings.ReplaceAll(
-					strings.ReplaceAll(
-						split[2],
-						" ", "_",
-					),
-					"'", "",
+					split[2],
+					" ", "_",
 				),
 				"\"", "",
 			)

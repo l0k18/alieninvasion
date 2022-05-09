@@ -1,8 +1,20 @@
 package alieninvasion
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"os"
+)
 
 func (w *World) ToFile(filename string) {
+	output, err := os.OpenFile(
+		filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC,
+		0755,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for i := range w.Lookup.Index {
 		if i == 0 {
 			continue
@@ -11,7 +23,8 @@ func (w *World) ToFile(filename string) {
 		for n := 0; n < 4; n++ {
 			neighbours[n] = w.Lookup.Index[w.Cities[i].Neighbour[n]]
 		}
-		fmt.Printf(
+		fmt.Fprintf(
+			output,
 			"%s %s=%s %s=%s %s=%s %s=%s\n",
 			w.Lookup.Index[i],
 			Dirs[0],
