@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	. "github.com/l0k18/alieninvasion"
 	"math/rand"
@@ -42,9 +41,10 @@ func main() {
 	}
 
 	if int(h*v) > len(NameList) {
-		err = errors.New(
-			"sorry, there isn't enough names in our list" +
-				"for that many human settlements",
+		err = fmt.Errorf(
+			"sorry, there isn't enough names in our list "+
+				"for that many human settlements, "+
+				"there is %d on earth over 1000 population", len(NameList),
 		)
 		fail(err)
 	}
