@@ -41,7 +41,7 @@ func main() {
 		fail(err)
 	}
 
-	if int(h*v) > NameLen {
+	if int(h*v) > len(NameList) {
 		err = errors.New(
 			"sorry, there isn't enough names in our list" +
 				"for that many human settlements",

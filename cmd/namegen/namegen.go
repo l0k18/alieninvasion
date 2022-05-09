@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -24,50 +25,55 @@ func main() {
 		log.Fatal(err)
 	}
 
+	names := make([]string, 139661)
 	scanner := bufio.NewScanner(fd)
+	var counter int
+	for scanner.Scan() {
+		if counter == 0 {
+			counter++
+			continue
+		}
+		split := strings.Split(scanner.Text(), ";")
+		names[counter] =
+			strings.ReplaceAll(
+				strings.ReplaceAll(
+					strings.ReplaceAll(
+						split[2],
+						" ", "_",
+					),
+					"'", "",
+				),
+				"\"", "",
+			)
+		counter++
+	}
+
+	sort.Strings(names)
 
 	fmt.Fprintln(
 		output,
 		`package main
-
-// Run 'go generate' at the root of the repo on this package to update this file
+	
+// Run 'go generate ./...' at the root of the repo on this package to update
 `+`//go:generate go run ../namegen/.
-
-import "sort"
-
-func init() {
-	NameLen = len(NameList)
-	sort.Strings(NameList)
-}
-
-var NameLen int
-var NameList = []string{`,
+		
+var NameList = []string{
+	"",`,
 	)
-
-	first := true
-	for scanner.Scan() {
-		if first {
-			first = false
+	prev := names[0]
+	for i := 1; i < counter; i++ {
+		if names[i] == prev || names[i] == "" {
 			continue
 		}
-		split := strings.Split(scanner.Text(), ";")
-		fmt.Fprintf(
-			output, "\t\"%s\",\n",
-			strings.ReplaceAll(
-				strings.ReplaceAll(
-					split[2],
-					" ", "_",
-				),
-				"\"", "",
-			),
-		)
+		fmt.Fprintf(output, "\t\"%s\",\n", names[i])
+		prev = names[i]
 	}
-
 	fmt.Fprintln(
 		output,
 		`}`,
 	)
 
+	output.Close()
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
