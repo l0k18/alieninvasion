@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+//AddFromFile reads in a file line by line to input city description lines and generate a world
 func (w *World) AddFromFile(filename string) {
 
 	fd, err := os.Open(filename)
@@ -30,6 +31,7 @@ func (w *World) AddFromFile(filename string) {
 	}
 }
 
+//AddFromString inputs a new city given a string with name, and up to 4 key=value with keys for cardinal directions
 func (w *World) AddFromString(input string) (err error) {
 
 	// City name is first and then space separated up to 4 neighbours one for

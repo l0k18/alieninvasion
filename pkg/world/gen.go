@@ -13,7 +13,7 @@ type Line []string
 // Grid is a 2d array of names
 type Grid []Line
 
-func GenerateWorld(h, v int64, seed int64) (w *World) {
+func Generate(h, v int64, seed int64) (w *World) {
 
 	rand.Seed(seed)
 	rand.Shuffle(
@@ -21,7 +21,7 @@ func GenerateWorld(h, v int64, seed int64) (w *World) {
 		func(i, j int) { cities.NameList[i], cities.NameList[j] = cities.NameList[j], cities.NameList[i] },
 	)
 
-	w = NewWorld()
+	w = New()
 
 	// We are going to generate a uniform grid of h*v cities from a 2d slice
 	// of random generated names

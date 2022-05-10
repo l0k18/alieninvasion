@@ -37,7 +37,7 @@ func main() {
 		result(err)
 	}
 
-	w := world.NewWorld()
+	w := world.New()
 	w.AddFromFile(os.Args[3])
 
 	War(w, aliens, seed)

@@ -71,7 +71,7 @@ type World struct {
 	Cities
 }
 
-func NewWorld() *World {
+func New() *World {
 	return &World{
 		Length: 1, Lookup: NewLookup(), Cities: NewCities(),
 	}

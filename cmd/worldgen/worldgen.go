@@ -46,7 +46,7 @@ func main() {
 	seed, err = strconv.ParseInt(os.Args[3], 10, 64)
 	check(err)
 
-	w := world.GenerateWorld(h, v, seed)
+	w := world.Generate(h, v, seed)
 	w.ToFile(os.Args[4])
 
 }
