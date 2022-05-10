@@ -38,7 +38,8 @@ func main() {
 		err = fmt.Errorf(
 			"sorry, there isn't enough names in our list "+
 				"for that many human settlements, "+
-				"there is %d on earth over 1000 population", len(cities.NameList),
+				"there is %d on earth over 1000 population",
+			len(cities.NameList),
 		)
 		check(err)
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/l0k18/alieninvasion/pkg/war"
 	"github.com/l0k18/alieninvasion/pkg/world"
 	"os"
 	"strconv"
@@ -40,10 +41,6 @@ func main() {
 	w := world.New()
 	w.AddFromFile(os.Args[3])
 
-	War(w, aliens, seed)
-	w.Print(os.Stdout)
-}
-
-func War(w *world.World, aliens, seed int64) {
-
+	war.War(w, aliens, seed)
+	// w.Print(os.Stdout)
 }
