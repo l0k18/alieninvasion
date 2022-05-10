@@ -50,28 +50,12 @@ func War(w *world.World, aliens, seed int64) {
 		if cities[i] != 0 {
 
 			alienMap[uint32(cities[i])] = uint32(i)
-
-			// city := uint32(cities[i])
-			// fmt.Println(
-			//     "Alien",
-			//     cities[i],
-			//     w.Lookup.Index[city],
-			//     world.Dirs[world.N],
-			//     w.Lookup.Index[w.Cities[city].Neighbour[world.N]],
-			//     world.Dirs[world.E],
-			//     w.Lookup.Index[w.Cities[city].Neighbour[world.E]],
-			//     world.Dirs[world.W],
-			//     w.Lookup.Index[w.Cities[city].Neighbour[world.W]],
-			//     world.Dirs[world.S],
-			//     w.Lookup.Index[w.Cities[city].Neighbour[world.S]],
-			// )
 		}
 	}
-	w.Print(os.Stdout)
-	// run for a maximum of 10000 turns
+
+	// run for a maximum of 10000 turns or until there is one or no aliens left
 	for turn := 0; turn < 10000 && len(alienMap) > 1; turn++ {
 
-		//fmt.Println("aliens", alienMap)
 		// iterate the list of aliens and move them to a new location
 		//
 		// we move first then check collisions, so it is possible for up to 4
@@ -80,12 +64,6 @@ func War(w *world.World, aliens, seed int64) {
 
 			// randomly select a direction to move each alien
 			moveDir := rand.Intn(5)
-			//
-			//if moveDir < 3 {
-			//	fmt.Println(alienMap[i], "moveDir", world.Dirs[moveDir])
-			//} else {
-			//	fmt.Println(alienMap[i], "not moving")
-			//}
 
 			// If the random number is 4 the alien decides not to move
 			if moveDir > 3 {
@@ -176,6 +154,6 @@ func War(w *world.World, aliens, seed int64) {
 			}
 		}
 	}
-	w.Print(os.Stdout)
 
+	w.Print(os.Stdout)
 }
