@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"github.com/l0k18/alieninvasion/pkg/world"
 	"math/rand"
+	"os"
 )
 
 type Aliens map[uint32]uint32
 
 func War(w *world.World, aliens, seed int64) {
+
+	aliens++
 
 	// Create a slice matching the cities, and then shuffle them
 	cityCount := len(w.Cities)
@@ -64,12 +67,11 @@ func War(w *world.World, aliens, seed int64) {
 			// )
 		}
 	}
-
-	// fmt.Println(alienMap)
-
+	w.Print(os.Stdout)
 	// run for a maximum of 10000 turns
-	for turn := 0; turn < 10000; turn++ {
+	for turn := 0; turn < 10000 && len(alienMap) > 1; turn++ {
 
+		//fmt.Println("aliens", alienMap)
 		// iterate the list of aliens and move them to a new location
 		//
 		// we move first then check collisions, so it is possible for up to 4
@@ -78,6 +80,12 @@ func War(w *world.World, aliens, seed int64) {
 
 			// randomly select a direction to move each alien
 			moveDir := rand.Intn(5)
+			//
+			//if moveDir < 3 {
+			//	fmt.Println(alienMap[i], "moveDir", world.Dirs[moveDir])
+			//} else {
+			//	fmt.Println(alienMap[i], "not moving")
+			//}
 
 			// If the random number is 4 the alien decides not to move
 			if moveDir > 3 {
@@ -136,15 +144,15 @@ func War(w *world.World, aliens, seed int64) {
 						fmt.Print(" and ")
 
 						// if this is not the first, separate with a comma
-					} else if alien <= 1 {
+					} else if alien != 0 {
 
 						fmt.Print(", ")
 					}
 
 					fmt.Print(detector[city][alien])
-
 					// lastly, delete the alien
-					delete(alienMap, alien)
+					delete(alienMap, detector[city][alien])
+
 				}
 				fmt.Printf(
 					" converged on %s and destroyed it!\n",
@@ -161,7 +169,13 @@ func War(w *world.World, aliens, seed int64) {
 					// then we delete the outbound neighbour entry
 					w.Cities[city].Neighbour[dir] = 0
 				}
+				idx := w.Lookup.Index[city]
+				delete(w.Lookup.Index, city)
+				delete(w.Lookup.Name, idx)
+
 			}
 		}
 	}
+	w.Print(os.Stdout)
+
 }
