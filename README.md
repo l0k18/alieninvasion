@@ -7,7 +7,7 @@ To generate a random world map file:
 
 To simulate an invasion on the world map file:
 
-    go run ./cmd/war/. <aliencount> <filename>
+    go run ./cmd/war/. <aliencount> <seed> <filename>
 
 A one liner example:
 

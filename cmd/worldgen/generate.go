@@ -14,19 +14,21 @@ type Line []string
 // Grid is a 2d array of names
 type Grid []Line
 
-func fail(err error) {
-	fmt.Println(err)
+func result(err error) {
+	res := 0
+	if err != nil {
+		fmt.Println("Error:", err)
+		res = 1
+	}
 	fmt.Println("alieninvasion world map grid generator")
 	fmt.Printf("usage: %s <h> <v> <seed> <filename>\n", os.Args[0])
-	os.Exit(1)
+	os.Exit(res)
 }
 
 func main() {
 
 	if len(os.Args) != 5 {
-		fmt.Println("alieninvasion world map grid generator")
-		fmt.Printf("usage: %s <h> <v> <seed> <filename>\n", os.Args[0])
-		os.Exit(0)
+		result(nil)
 	}
 
 	var h, v, seed int64
@@ -34,12 +36,12 @@ func main() {
 
 	h, err = strconv.ParseInt(os.Args[1], 10, 64)
 	if err != nil {
-		fail(err)
+		result(err)
 	}
 
 	v, err = strconv.ParseInt(os.Args[2], 10, 64)
 	if err != nil {
-		fail(err)
+		result(err)
 	}
 
 	if int(h*v) > len(NameList) {
@@ -48,12 +50,12 @@ func main() {
 				"for that many human settlements, "+
 				"there is %d on earth over 1000 population", len(NameList),
 		)
-		fail(err)
+		result(err)
 	}
 
 	seed, err = strconv.ParseInt(os.Args[3], 10, 64)
 	if err != nil {
-		fail(err)
+		result(err)
 	}
 
 	w := GenerateWorld(h, v, seed)

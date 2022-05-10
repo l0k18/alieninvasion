@@ -1,10 +1,34 @@
 package alieninvasion
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"log"
+	"os"
 	"strings"
 )
+
+func (w *World) AddFromFile(filename string) {
+
+	fd, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer fd.Close()
+
+	scanner := bufio.NewScanner(fd)
+	var counter int
+	for scanner.Scan() {
+		err := w.AddFromString(scanner.Text())
+		if err != nil {
+			fmt.Println("error reading file on line", counter)
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		counter++
+	}
+}
 
 func (w *World) AddFromString(input string) (err error) {
 

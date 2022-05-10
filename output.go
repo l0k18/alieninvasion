@@ -2,6 +2,7 @@ package alieninvasion
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
 )
@@ -14,7 +15,10 @@ func (w *World) ToFile(filename string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	w.Print(output)
+}
 
+func (w *World) Print(output io.Writer) {
 	for i := range w.Lookup.Index {
 		if i == 0 {
 			continue
@@ -37,4 +41,5 @@ func (w *World) ToFile(filename string) {
 			neighbours[3],
 		)
 	}
+
 }
