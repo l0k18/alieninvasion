@@ -11,14 +11,17 @@ import (
 
 func main() {
 
-	fd, err := os.Open("../namegen/names.csv")
+	wd, err := os.Getwd()
+	fmt.Fprintf(os.Stderr, "%s %v\n", wd, err)
+
+	fd, err := os.Open("../../cmd/namegen/names.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer fd.Close()
 
 	output, err := os.OpenFile(
-		"names.go", os.O_CREATE|os.O_RDWR|os.O_TRUNC,
+		"../../pkg/cities/names.go", os.O_CREATE|os.O_RDWR|os.O_TRUNC,
 		0755,
 	)
 	if err != nil {
@@ -49,10 +52,11 @@ func main() {
 
 	fmt.Fprintln(
 		output,
-		`package main
+		`package cities
 	
 // Run 'go generate ./...' at the root of the repo on this package to update
-`+`//go:generate go run ../namegen/.
+
+`+`//go:generate go run ../../cmd/namegen/.
 		
 var NameList = []string{
 	"",`,

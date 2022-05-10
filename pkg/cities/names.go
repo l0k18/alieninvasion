@@ -1,7 +1,8 @@
-package main
+package cities
 
 // Run 'go generate ./...' at the root of the repo on this package to update
-//go:generate go run ../namegen/.
+
+//go:generate go run ../../cmd/namegen/.
 
 var NameList = []string{
 	"",
