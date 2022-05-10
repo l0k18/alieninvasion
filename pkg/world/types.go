@@ -1,4 +1,4 @@
-package alieninvasion
+package world
 
 import "fmt"
 

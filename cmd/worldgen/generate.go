@@ -1,8 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	. "github.com/l0k18/alieninvasion"
+	. "github.com/l0k18/alieninvasion/pkg/world"
 	"math/rand"
 	"os"
 	"strconv"
@@ -15,34 +16,29 @@ type Line []string
 type Grid []Line
 
 func result(err error) {
-	res := 0
+
 	if err != nil {
+		fmt.Println("alieninvasion world map grid generator")
+		fmt.Printf("usage: %s <h> <v> <seed> <filename>\n", os.Args[0])
 		fmt.Println("Error:", err)
-		res = 1
+		os.Exit(1)
 	}
-	fmt.Println("alieninvasion world map grid generator")
-	fmt.Printf("usage: %s <h> <v> <seed> <filename>\n", os.Args[0])
-	os.Exit(res)
 }
 
 func main() {
 
 	if len(os.Args) != 5 {
-		result(nil)
+		result(errors.New("incorrect command line parameters"))
 	}
 
 	var h, v, seed int64
 	var err error
 
 	h, err = strconv.ParseInt(os.Args[1], 10, 64)
-	if err != nil {
-		result(err)
-	}
+	result(err)
 
 	v, err = strconv.ParseInt(os.Args[2], 10, 64)
-	if err != nil {
-		result(err)
-	}
+	result(err)
 
 	if int(h*v) > len(NameList) {
 		err = fmt.Errorf(
@@ -54,9 +50,7 @@ func main() {
 	}
 
 	seed, err = strconv.ParseInt(os.Args[3], 10, 64)
-	if err != nil {
-		result(err)
-	}
+	result(err)
 
 	w := GenerateWorld(h, v, seed)
 	w.ToFile(os.Args[4])
@@ -100,6 +94,7 @@ func GenerateWorld(h, v int64, seed int64) (w *World) {
 
 			name := grid[lat][long]
 
+			// wrap the map at the edges
 			latN := lat - 1
 			if latN < 0 {
 				latN = latMax
@@ -122,18 +117,8 @@ func GenerateWorld(h, v int64, seed int64) (w *World) {
 			nW := grid[lat][longW]
 			nS := grid[latS][long]
 
-			lineString := fmt.Sprintf(
-				"%s %s=%s %s=%s %s=%s %s=%s",
-				name,
-				Dirs[N],
-				nN,
-				Dirs[E],
-				nE,
-				Dirs[W],
-				nW,
-				Dirs[S],
-				nS,
-			)
+			lineString := fmt.Sprintf("%s %s=%s %s=%s %s=%s %s=%s",
+				name, Dirs[N], nN, Dirs[E], nE, Dirs[W], nW, Dirs[S], nS)
 
 			err := w.AddFromString(lineString)
 			if err != nil {

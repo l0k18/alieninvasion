@@ -1,4 +1,4 @@
-package alieninvasion
+package world
 
 import (
 	"bufio"
@@ -164,22 +164,18 @@ func (w *World) AddFromString(input string) (err error) {
 				n != 0 &&
 				w.Cities[n].Neighbour[^dir&3] != 0 {
 
-				// fmt.Println("n", n)
-				// spew.Dump(w.Cities)
 				return fmt.Errorf(
 					"error adding city %s as preexisting neighbour %s is"+
 						" pointing to different city %s",
 					newName, newNeighbour,
 					w.Lookup.Index[w.Cities[n].Neighbour[^dir&3]],
 				)
-			} else {
-
-				w.Cities[city].Neighbour[dir] = w.Lookup.Name[newNeighbour]
-				w.Cities[n].Neighbour[^dir&3] = city
 			}
 
+			// Store the index of the neighbour city in the respective direction slot
+			w.Cities[city].Neighbour[dir] = w.Lookup.Name[newNeighbour]
+			w.Cities[n].Neighbour[^dir&3] = city
 		}
-
 	}
 
 	return nil
